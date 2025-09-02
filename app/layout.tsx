@@ -9,8 +9,8 @@ import { Suspense } from "react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "devxaves-software",
-  description: "devxaves-software",
+  title: "DEVX AVES",
+  description: "DEVX AVES Software",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
