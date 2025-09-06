@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  claims    Claim[]
+}
+
+model Claim {
+  id           Int                 @id @default(autoincrement())
+  claimant     String
+  claimantName String // Display name for claimant
+  village      String
+  district     String // District information
+  type         String // IFR, CR, CFR
+  area         Float
+  status       String // PENDING, APPROVED, REJECTED
+  coords       Json
+  nerData      Json? // NER-extracted fields from OCR
+  updatedAt    DateTime            @updatedAt
+  createdAt    DateTime            @default(now())
+  user         User?               @relation(fields: [userId], references: [id])
+  userId       String?
+  dss          DSSRecommendation[]
+}
+
+model Asset {
+  id        Int      @id @default(autoincrement())
+  type      String // agriculture, forest, water, settlement
+  coords    Json
+  village   String
+  source    String // Satellite, Manual
+  name      String?
+  owner     String?
+  createdAt DateTime @default(now())
+}
+
+model DSSRecommendation {
+  id        Int      @id @default(autoincrement())
+  claim     Claim    @relation(fields: [claimId], references: [id])
+  claimId   Int
+  scheme    String
+  reason    String
+  priority  Int      @default(1)
+  createdAt DateTime @default(now())
+}
+
+model OCRDocument {
+  id          Int      @id @default(autoincrement())
+  filename    String
+  rawText     String
+  nerEntities Json
+  processed   Boolean  @default(false)
+  claimId     Int?
+  createdAt   DateTime @default(now())
+}
+
+model DSSRule {
+  id        Int      @id @default(autoincrement())
+  name      String
+  condition String // JSON condition logic
+  action    String // Recommendation action
+  priority  Int      @default(1)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PolicyThreshold {
+  id          Int      @id @default(autoincrement())
+  parameter   String   @unique // water_index, forest_cover, etc.
+  value       Float
+  unit        String?
+  description String?
+  updatedAt   DateTime @updatedAt
+}
