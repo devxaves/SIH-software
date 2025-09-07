@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@clerk/nextjs/server"
 import { prisma } from "@/lib/prisma"
-import { DSSEngine, enrichClaimContext } from "@/lib/dss-engine"
+import { DSSEngine, enrichClaimContext, getDefaultThresholds } from "@/lib/dss-engine"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -16,7 +16,11 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { claimId, thresholds } = body
 
-    console.log("[v0] Evaluating DSS rules for claim:", claimId)
+    if (!claimId) {
+      return NextResponse.json({ error: "claimId is required" }, { status: 400 })
+    }
+
+    console.log("[DSS] Evaluating rules for claim:", claimId)
 
     // Get claim data
     const claim = await prisma.claim.findUnique({
@@ -27,55 +31,101 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Claim not found" }, { status: 404 })
     }
 
-    // Get current policy thresholds
+    // Get current policy thresholds from database
     const policyThresholds = await prisma.policyThreshold.findMany()
     const thresholdMap = policyThresholds.reduce((acc, pt) => {
       acc[pt.parameter] = pt.value
       return acc
     }, {} as any)
 
-    // Use provided thresholds or defaults
+    // Use provided thresholds for simulation, or database thresholds, or defaults
     const engineThresholds = {
-      waterIndex: thresholds?.waterIndex ?? thresholdMap.water_index ?? 0.5,
-      forestCover: thresholds?.forestCover ?? thresholdMap.forest_cover ?? 0.4,
-      maxAreaHa: thresholds?.maxAreaHa ?? thresholdMap.max_area_ha ?? 5.0,
-      minAreaHa: thresholds?.minAreaHa ?? thresholdMap.min_area_ha ?? 0.5,
-      populationDensity: thresholds?.populationDensity ?? thresholdMap.population_density ?? 100,
+      waterIndex: thresholds?.water_index ?? thresholdMap.water_index ?? getDefaultThresholds().waterIndex,
+      forestCover: thresholds?.forest_cover ?? thresholdMap.forest_cover ?? getDefaultThresholds().forestCover,
+      maxAreaHa: thresholds?.max_area_ha ?? thresholdMap.max_area_ha ?? getDefaultThresholds().maxAreaHa,
+      minAreaHa: thresholds?.min_area_ha ?? thresholdMap.min_area_ha ?? getDefaultThresholds().minAreaHa,
+      populationDensity: thresholds?.population_density ?? thresholdMap.population_density ?? getDefaultThresholds().populationDensity,
     }
 
-    // Initialize DSS engine
+    console.log("[DSS] Using thresholds:", engineThresholds)
+
+    // Initialize DSS engine with thresholds
     const dssEngine = new DSSEngine(engineThresholds)
 
     // Enrich claim with environmental context
     const enrichedClaim = await enrichClaimContext(claim)
+    console.log("[DSS] Enriched claim context:", {
+      id: enrichedClaim.id,
+      village: enrichedClaim.village,
+      waterIndex: enrichedClaim.waterIndex,
+      forestCover: enrichedClaim.forestCover,
+      populationDensity: enrichedClaim.populationDensity,
+    })
 
-    // Evaluate rules
-    const recommendations = dssEngine.evaluateRules(enrichedClaim)
+    // Evaluate rules to get recommendations
+    const ruleActions = dssEngine.evaluateRules(enrichedClaim)
 
-    // Save recommendations to database
+    if (ruleActions.length === 0) {
+      console.log("[DSS] No rules matched for claim:", claimId)
+      return NextResponse.json({
+        claimId: claim.id,
+        recommendations: [],
+        context: enrichedClaim,
+        thresholds: engineThresholds,
+        message: "No scheme recommendations generated for this claim based on current thresholds"
+      })
+    }
+
+    // Delete existing recommendations for this claim to avoid duplicates
+    await prisma.dSSRecommendation.deleteMany({
+      where: { claimId: claim.id }
+    })
+
+    // Save new recommendations to database
     const savedRecommendations = await Promise.all(
-      recommendations.map((rec) =>
+      ruleActions.map((action) =>
         prisma.dSSRecommendation.create({
           data: {
             claimId: claim.id,
-            scheme: rec.scheme,
-            reason: rec.reason,
-            priority: rec.priority,
+            scheme: action.scheme,
+            reason: action.reason,
+            priority: action.priority,
           },
         }),
       ),
     )
 
-    console.log("[v0] Saved", savedRecommendations.length, "recommendations")
+    console.log("[DSS] Saved", savedRecommendations.length, "recommendations")
 
     return NextResponse.json({
+      success: true,
       claimId: claim.id,
       recommendations: savedRecommendations,
-      context: enrichedClaim,
+      context: {
+        claimDetails: {
+          id: enrichedClaim.id,
+          claimant: enrichedClaim.claimantName,
+          village: enrichedClaim.village,
+          district: enrichedClaim.district,
+          type: enrichedClaim.type,
+          area: enrichedClaim.area,
+          status: enrichedClaim.status,
+        },
+        environmentalData: {
+          waterIndex: enrichedClaim.waterIndex,
+          forestCover: enrichedClaim.forestCover,
+          populationDensity: enrichedClaim.populationDensity,
+          nearbyAssets: enrichedClaim.nearbyAssets,
+        },
+      },
       thresholds: engineThresholds,
+      rulesEvaluated: dssEngine.getRules().filter(r => r.active).length,
     })
   } catch (error: any) {
-    console.error("[v0] DSS evaluation failed:", error)
-    return NextResponse.json({ error: error.message || "Evaluation failed" }, { status: 500 })
+    console.error("[DSS] Evaluation failed:", error)
+    return NextResponse.json({ 
+      error: error.message || "Internal server error during evaluation",
+      details: error.stack 
+    }, { status: 500 })
   }
 }
