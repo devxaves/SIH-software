@@ -7,11 +7,12 @@ import "./globals.css"
 import { ClerkProvider } from "@clerk/nextjs"
 import Link from "next/link"
 import { Suspense } from "react"
+import Forestbg from "./forestbg.png"
+import Image from "next/image"
 
 export const metadata: Metadata = {
   title: "FRA Atlas & DSS v2.0",
   description: "Forest Rights Act Atlas & Decision Support System with AI-powered digitization",
-  generator: "v0.app",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -21,6 +22,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body
           className={`font-sans ${GeistSans.variable} ${GeistMono.variable} min-h-dvh bg-background text-foreground antialiased`}
         >
+          {/* Background image */}
+      <div className="absolute inset-0 fixed -z-10">
+  <Image
+    src={Forestbg}
+    alt="Forest background"
+    fill
+    priority
+    className="object-cover object-center opacity-20"
+  />
+</div>
           <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
             <header className="border-b bg-gradient-to-r from-green-50 to-blue-50 shadow-sm">
               <nav className="mx-auto flex max-w-7xl items-center justify-between p-4">
@@ -35,37 +46,37 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     className="text-sm font-medium hover:text-green-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
                     href="/dashboard"
                   >
-                    📊 Dashboard
+                     Dashboard
                   </Link>
                   <Link
                     className="text-sm font-medium hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
                     href="/upload"
                   >
-                    📄 Upload
+                     Upload
                   </Link>
                   <Link
                     className="text-sm font-medium hover:text-emerald-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
                     href="/atlas"
                   >
-                    🗺️ Atlas
+                     Atlas
                   </Link>
                   <Link
                     className="text-sm font-medium hover:text-purple-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
                     href="/dss"
                   >
-                    🤖 DSS
+                     DSS
                   </Link>
                   <Link
                     className="text-sm font-medium hover:text-orange-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
                     href="/archive"
                   >
-                    📚 Archive
+                     Archive
                   </Link>
                   <Link
                     className="text-sm font-medium hover:text-red-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
                     href="/admin"
                   >
-                    ⚙️ Admin
+                     Admin
                   </Link>
                 </div>
               </nav>
