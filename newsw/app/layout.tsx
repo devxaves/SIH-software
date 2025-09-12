@@ -9,6 +9,7 @@ import Link from "next/link"
 import { Suspense } from "react"
 import Forestbg from "./forestbg.png"
 import Image from "next/image"
+import Landing from "../components/ui/landing"
 
 export const metadata: Metadata = {
   title: "FRA Atlas & DSS v2.0",
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </nav>
             </header>
             <main className="mx-auto max-w-7xl p-6 min-h-[calc(100vh-80px)]">{children}</main>
+            <Landing />
           </Suspense>
           <Analytics />
         </body>

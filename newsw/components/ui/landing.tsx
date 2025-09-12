@@ -1,5 +1,8 @@
 "use client";
-
+import image1 from "../../public/images/pic1.jpg"
+import image2 from "../../public/images/pic2.jpg"
+import image3 from "../../public/images/pic3.jpg"
+import image4 from "../../public/images/pic4.jpg"
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import { UserButton, useUser } from "@clerk/nextjs";
@@ -25,25 +28,25 @@ const FRALandingPage = () => {
     {
       title: "Digitizing Forest Rights",
       description: "Transforming legacy records into actionable digital insights",
-      image: "/images/carousel1.jpg", // Replace with actual image path
+      image: image1, // Replace with actual image path
       color: "from-orange-400 to-orange-600"
     },
     {
       title: "AI-Powered Asset Mapping",
       description: "Satellite imagery analysis for accurate resource mapping",
-      image: "/images/carousel2.jpg", // Replace with actual image path
+      image: "/images/pic2.jpg", // Replace with actual image path
       color: "from-green-500 to-green-700"
     },
     {
       title: "Interactive FRA Atlas",
       description: "Visualize forest rights data with our WebGIS platform",
-      image: "/images/carousel3.jpg", // Replace with actual image path
+      image: "/images/pic3.jpg", // Replace with actual image path
       color: "from-orange-400 to-green-600"
     },
     {
       title: "Decision Support System",
       description: "Optimize scheme implementation for tribal communities",
-      image: "/images/carousel4.jpg", // Replace with actual image path
+      image: "/images/pic4.jpg", // Replace with actual image path
       color: "from-green-400 to-orange-600"
     }
   ];
