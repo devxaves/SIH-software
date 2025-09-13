@@ -42,40 +42,42 @@ export default function DashboardPage() {
   if (!analytics) return <div className="p-6">No data available</div>
 
   return (
-    <section className="space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">FRA Atlas Dashboard</h1>
-        <div className="text-sm text-muted-foreground">Last updated: {new Date().toLocaleTimeString()}</div>
+    <section className="space-y-8 p-6 animate-fade-in">
+      <div className="flex items-center justify-between animate-slide-in-left">
+        <h1 className="text-4xl font-bold text-primary">FRA Atlas Dashboard</h1>
+        <div className="text-sm text-muted-foreground bg-white/80 px-4 py-2 rounded-full shadow-md backdrop-blur-sm">
+          Last updated: {new Date().toLocaleTimeString()}
+        </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 animate-slide-in-right">
         <KpiCard
           label="Total Claims"
           value={analytics.overview.totalClaims}
           trend={`${analytics.overview.approvalRate.toFixed(1)}% approved`}
-          color="blue"
+          color="primary"
         />
         <KpiCard
           label="Pending Review"
           value={analytics.overview.pendingClaims}
           trend={`${analytics.overview.pendingRate.toFixed(1)}% of total`}
-          color="yellow"
+          color="secondary"
         />
         <KpiCard
           label="Approved Claims"
           value={analytics.overview.approvedClaims}
           trend="Processing complete"
-          color="green"
+          color="success"
         />
         <KpiCard
           label="Forest Assets"
           value={analytics.overview.totalAssets}
           trend="Digitally mapped"
-          color="emerald"
+          color="accent"
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2 animate-fade-in">
         <Tile title="Claims by District (Top 10)">
           <BarChart
             data={analytics.claimsByDistrict.slice(0, 10).map((d) => ({
@@ -122,7 +124,7 @@ function KpiCard({
   label,
   value,
   trend,
-  color = "blue",
+  color = "primary",
 }: {
   label: string
   value: number | string
@@ -130,25 +132,25 @@ function KpiCard({
   color?: string
 }) {
   const colorClasses = {
-    blue: "border-blue-200 bg-blue-50",
-    yellow: "border-yellow-200 bg-yellow-50",
-    green: "border-green-200 bg-green-50",
-    emerald: "border-emerald-200 bg-emerald-50",
+    primary: "border-primary/20 bg-gradient-orange-white shadow-lg hover:shadow-xl transform hover:scale-105",
+    secondary: "border-secondary/20 bg-gradient-green-white shadow-lg hover:shadow-xl transform hover:scale-105",
+    success: "border-green-200 bg-gradient-to-br from-green-50 to-green-100 shadow-lg hover:shadow-xl transform hover:scale-105",
+    accent: "border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100 shadow-lg hover:shadow-xl transform hover:scale-105",
   }
 
   return (
-    <div className={`rounded-lg border p-4 ${colorClasses[color as keyof typeof colorClasses]}`}>
-      <div className="text-sm text-muted-foreground">{label}</div>
-      <div className="mt-2 text-3xl font-bold">{value}</div>
-      {trend && <div className="mt-1 text-xs text-muted-foreground">{trend}</div>}
+    <div className={`rounded-xl border p-6 transition-all duration-300 card-enhanced ${colorClasses[color as keyof typeof colorClasses]}`}>
+      <div className="text-sm font-medium text-muted-foreground mb-2">{label}</div>
+      <div className="mt-2 text-4xl font-bold text-primary">{value}</div>
+      {trend && <div className="mt-2 text-sm text-muted-foreground font-medium">{trend}</div>}
     </div>
   )
 }
 
 function Tile({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border bg-white p-6 shadow-sm">
-      <h3 className="mb-4 text-lg font-semibold">{title}</h3>
+    <div className="rounded-xl border bg-white/90 p-8 shadow-lg backdrop-blur-sm card-enhanced">
+      <h3 className="mb-6 text-xl font-bold text-primary">{title}</h3>
       {children}
     </div>
   )

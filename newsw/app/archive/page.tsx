@@ -139,23 +139,23 @@ export default function ArchivePage() {
   }
 
   return (
-    <section className="space-y-6">
-      <div className="flex items-center justify-between">
+    <section className="space-y-8 animate-fade-in">
+      <div className="flex items-center justify-between animate-slide-in-left">
         <div>
-          <h1 className="text-2xl font-semibold">FRA Digital Archive</h1>
-          <p className="text-sm text-muted-foreground">Search and browse digitized FRA claims</p>
+          <h1 className="text-4xl font-bold text-primary">FRA Digital Archive</h1>
+          <p className="text-lg text-muted-foreground mt-2">Search and browse digitized FRA claims</p>
         </div>
         <button
           onClick={exportResults}
           disabled={!searchResult?.claims?.length}
-          className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
+          className="bg-gradient-orange-white text-white px-6 py-3 rounded-xl font-semibold disabled:opacity-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl btn-enhanced"
         >
           Export Results
         </button>
       </div>
 
       {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 animate-slide-in-right">
           <StatCard label="Total Claims" value={stats.overview.totalClaims} />
           <StatCard label="Granted" value={stats.overview.grantedClaims} color="text-green-600" />
           <StatCard label="Pending" value={stats.overview.pendingClaims} color="text-yellow-600" />

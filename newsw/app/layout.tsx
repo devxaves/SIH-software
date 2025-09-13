@@ -12,7 +12,7 @@ import Image from "next/image"
 // import Landing from "../components/ui/landing"
 
 export const metadata: Metadata = {
-  title: "FRA Atlas & DSS v2.0",
+  title: "BharatAtlas",
   description: "Forest Rights Act Atlas & Decision Support System with AI-powered digitization",
 }
 
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           className={`font-sans ${GeistSans.variable} ${GeistMono.variable} min-h-dvh bg-background text-foreground antialiased`}
         >
           {/* Background image */}
-      <div className="absolute inset-0 fixed -z-10">
+      <div className="fixed inset-0 -z-10">
   <Image
     src={Forestbg}
     alt="Forest background"
@@ -34,55 +34,55 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   />
 </div>
           <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
-            <header className="border-b bg-gradient-to-r from-green-50 to-blue-50 shadow-sm">
+            <header className="border-b bg-white shadow-md backdrop-blur-sm animate-fade-in">
               <nav className="mx-auto flex max-w-7xl items-center justify-between p-4">
                 <Link
                   href="/landing"
-                  className="font-bold text-xl text-green-700 hover:text-green-800 transition-colors"
+                  className="font-semibold text-xl text-primary hover:text-secondary transition-colors duration-200"
                 >
-                  🌲 FRA Atlas & DSS v2.0
+                  <span className="text-orange-600">Bharat</span><span className="text-green-600">Atlas</span>
                 </Link>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1">
                   <Link
-                    className="text-sm font-medium hover:text-green-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-200 px-3 py-2 rounded hover:bg-gray-50"
                     href="/dashboard"
                   >
-                     Dashboard
+                    Dashboard
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-200 px-3 py-2 rounded hover:bg-gray-50"
                     href="/upload"
                   >
-                     Upload
+                    Upload
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-emerald-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-200 px-3 py-2 rounded hover:bg-gray-50"
                     href="/atlas"
                   >
-                     Atlas
+                    Atlas
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-purple-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-200 px-3 py-2 rounded hover:bg-gray-50"
                     href="/dss"
                   >
-                     DSS
+                    DSS
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-orange-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-200 px-3 py-2 rounded hover:bg-gray-50"
                     href="/archive"
                   >
-                     Archive
+                    Archive
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-red-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium text-gray-700 hover:text-primary transition-colors duration-200 px-3 py-2 rounded hover:bg-gray-50"
                     href="/admin"
                   >
-                     Admin
+                    Admin
                   </Link>
                 </div>
               </nav>
             </header>
-            <main className="mx-auto max-w-7xl p-6 min-h-[calc(100vh-80px)]">{children}</main>
+            <main className="mx-auto max-w-7xl p-6 min-h-[calc(100vh-80px)] bg-gray-50 animate-fade-in">{children}</main>
             {/* <Landing /> */}
           </Suspense>
           <Analytics />

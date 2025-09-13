@@ -184,19 +184,19 @@ export default function DSSPage() {
   const clearError = () => setError(null)
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between animate-slide-in-left">
         <div>
-          <h1 className="text-2xl font-semibold">DSS Rule Engine</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-4xl font-bold text-primary">DSS Rule Engine</h1>
+          <p className="text-lg text-muted-foreground mt-2">
             Decision Support System for Forest Rights Act Implementation
           </p>
         </div>
         <button 
           onClick={exportCsv} 
           disabled={!recommendations || recommendations.length === 0}
-          className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="bg-gradient-orange-white text-white px-6 py-3 rounded-xl font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl btn-enhanced"
         >
           Export CSV
         </button>
