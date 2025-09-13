@@ -89,7 +89,7 @@ export default function UploadPage() {
           <button
             onClick={onUpload}
             disabled={!file || loading}
-            className="bg-gradient-orange-white text-white px-8 py-4 rounded-xl font-semibold disabled:opacity-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl btn-enhanced animate-glow"
+            className="cursor-pointer bg-orange-400 text-white px-8 py-4 rounded-xl font-semibold disabled:opacity-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl btn-enhanced animate-glow"
           >
             {loading ? "Processing..." : "Start OCR + NER"}
           </button>
