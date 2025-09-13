@@ -151,7 +151,7 @@ export default async function LandingPage() {
                 href={user ? "/dashboard" : "/sign-in"}
                 className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-md font-medium transition-colors duration-200"
               >
-                {user ? "Go to Dashboard" : "Get Started"}
+                {user ? "Go to Dashboard" : "Sign In"}
               </Link>
               <a
                 href="#highlights"
