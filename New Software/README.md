@@ -1,154 +1,114 @@
-# FRA Atlas & DSS v2.0 🌲
+# Smart Adarsh Gram Platform 🏡
 
-Enhanced AI-powered Forest Rights Act Atlas & Decision Support System with advanced OCR + NER, Bhuvan WebGIS integration, satellite asset mapping, and intelligent policy simulation.
+AI-driven infrastructure planning, inclusion analytics, and participatory governance toolkit for SC-majority villages pursuing the Adarsh Gram declaration.
 
-## 🚀 New in Version 2.0
+## 🌍 Vision & Impact
 
-- **Enhanced OCR + NER Pipeline**: AI-powered entity extraction from FRA documents
-- **Bhuvan WebGIS Integration**: Indian satellite imagery and topographic layers
-- **AI Asset Mapping**: Computer vision for satellite image classification
-- **Advanced DSS Engine**: Rule-based system with policy simulation
-- **Digital Archive**: Searchable claims database with advanced filtering
-- **Real-time Analytics**: Comprehensive KPIs and progress tracking
+- Deliver real-time gap analysis across infrastructure, social protection, and service delivery.
+- Dynamically prioritize interventions using ML-powered scoring blended with officer judgement.
+- Visualize community assets with geospatial intelligence and offline-first access.
+- Activate multilingual community engagement, grievance loops, and impact storytelling.
+- Guarantee accountability with blockchain-backed funding trails and risk intelligence.
+
+Outcome: accelerate evidence-led village transformation with measurable social impact at scale.
+
+## 🔑 Platform Pillars
+
+1. **Open Data Mesh** – Standards-compliant APIs ingest government registries, field surveys, crowdsourced inputs, and IoT feeds (OC4IDS-ready).
+2. **AI Gap Radar** – Machine learning models detect and forecast service gaps, ranking interventions by equity, cost, and urgency.
+3. **Smart Geographies** – Interactive MapLibre atlas with demographic overlays, asset layers, offline caching, and mobile geotagging.
+4. **Dynamic Prioritization** – Simulation-ready scoring engine with audit trails for manual overrides by government officers.
+5. **Community Pulse** – Multilingual dashboards, WhatsApp/SMS nudges, grievance tracking, and impact storytelling.
+6. **Resource Automation** – Live alerts for bottlenecks, resource shortfalls, and field visit scheduling.
+7. **Risk & Accountability** – AI risk forecasts and blockchain-backed funding ledger for transparent procurement and disbursals.
+8. **Accessible by Design** – Voice-ready, low-bandwidth UI with vernacular support for first-time digital users.
+
+## 🧭 Module Overview
+
+| Module | Purpose |
+| --- | --- |
+| **Landing Experience** | Mission overview, capability cards, platform pillars. |
+| **Intelligence Hub (Dashboard)** | KPIs, adoption velocity, gap breakdown, AI risk signals, blockchain ledger, community sentiment. |
+| **Geo Atlas** | MapLibre-based digital twin with project markers, community assets, and filterable layers. |
+| **Prioritization Lab** | AI-assisted recommendation engine, policy threshold tuning, simulation mode, CSV export. |
+| **Data Ops Workbench** | OCR + NER ingestion, metadata extraction, project registry creation. |
+| **Community Pulse Archive** | Searchable community feedback and project registry with advanced filters and summaries. |
+| **Operations Desk** | Project & asset management, AI-detected asset summaries, governance workflows. |
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 15 (App Router, TypeScript), TailwindCSS v4
-- **Authentication**: Clerk (complete user management)
-- **Database**: PostgreSQL with Prisma ORM
-- **Maps**: MapLibre GL JS with Bhuvan WMTS layers
-- **AI/ML**: Tesseract.js (OCR), HuggingFace Transformers (NER), Computer Vision APIs
-- **Charts**: Custom Tailwind-based visualizations
-- **Data Fetching**: SWR for client-side state management
+- **Framework**: Next.js 15 (App Router) with TypeScript
+- **Styling**: Tailwind CSS v4, custom utility components
+- **Auth**: Clerk for end-to-end user management
+- **Data**: PostgreSQL + Prisma ORM (Neon-compatible)
+- **GIS**: MapLibre GL JS with OpenStreetMap, satellite, terrain, and search integrations
+- **AI/ML**: Tesseract.js OCR, HuggingFace NER, rule-based DSS engine with simulation
+- **State & Fetching**: SWR for intelligent caching and polling
+- **Analytics**: Custom Tailwind visualizations and lightweight charts
 
-## 📋 Environment Variables
+## ⚙️ Environment Variables
 
-Create a `.env.local` file with the following variables:
+Create a `.env.local` file:
 
-\`\`\`bash
+```bash
 # Clerk Authentication
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_ZGlyZWN0LW1vbGUtNC5jbGVyay5hY2NvdW50cy5kZXYk
-CLERK_SECRET_KEY=sk_test_qbbRDrPVVtB3kq4ye7shRLhChJLMlBIwAi6pN4E1m7
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
 
 # Database
-DATABASE_URL=postgresql://neondb_owner:npg_sVya1twpTW0j@ep-summer-mud-a14088y5-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+DATABASE_URL=postgresql://<user>:<password>@<host>/<db>?sslmode=require
 
-# Environment
-NODE_ENV=development
-
-# AI Services (Optional - for enhanced features)
+# Optional AI Services
 HUGGINGFACE_API_KEY=your_huggingface_key_here
-\`\`\`
+```
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-### 1. Install Dependencies
-\`\`\`bash
+```bash
+# Install dependencies
 npm install
-\`\`\`
 
-### 2. Database Setup
-\`\`\`bash
-# Run Prisma migrations
+# Apply database migrations
 npx prisma migrate dev --name init
 
-# Optional: Open Prisma Studio
+# (Optional) Inspect data
 npx prisma studio
-\`\`\`
 
-### 3. Start Development Server
-\`\`\`bash
+# Run locally
 npm run dev
-\`\`\`
+```
 
-### 4. Access the Application
-- Visit `http://localhost:3000`
-- Sign up/Sign in via Clerk authentication
-- Explore the enhanced features from the landing page
+Visit `http://localhost:3000`, sign in via Clerk, and explore from the landing page.
 
-## 🏗️ Application Architecture
+## 🧱 Data Model Snapshot
 
-### Core Modules
-
-#### 🏠 **Landing Page**
-Enhanced hub with feature cards and capability highlights
-
-#### 📊 **Dashboard** 
-- Real-time KPIs and analytics
-- Claims processing statistics
-- Asset distribution charts
-- Monthly trend analysis
-- Progress tracking widgets
-
-#### 📄 **Upload & OCR**
-- Multi-format document upload (PDF, JPEG, PNG)
-- Enhanced OCR with Tesseract.js
-- NER entity extraction (persons, locations, organizations)
-- Automatic field parsing and validation
-- Direct claim creation from extracted data
-
-#### 🗺️ **FRA Atlas**
-- Interactive MapLibre GL maps
-- Bhuvan WebGIS layer integration:
-  - Satellite imagery
-  - Topographic maps  
-  - Forest cover data
-- Advanced filtering by village, type, status
-- Interactive popups with claim/asset details
-- Real-time data visualization
-
-#### 🤖 **DSS Engine**
-- Rule-based decision support system
-- Policy threshold configuration
-- Simulation mode for policy testing
-- Priority-based recommendations
-- CSV export functionality
-- Statistical analysis and reporting
-
-#### 📚 **Digital Archive**
-- Advanced search and filtering
-- Full-text search across claims
-- Date range filtering
-- Status and type categorization
-- Bulk operations support
-
-#### ⚙️ **Admin Panel**
-- Claims and assets management
-- AI-detected asset summaries
-- System configuration
-- Data import/export tools
-
-### 🔐 Security & Authentication
-
-- **Route Protection**: Middleware-based authentication for all routes
-- **API Security**: Server-side authentication checks for all mutations
-- **Data Validation**: Comprehensive input validation and sanitization
-- **Role-based Access**: Admin-level controls for sensitive operations
-
-### 🗄️ Database Schema
-
-\`\`\`prisma
+```prisma
 model Claim {
-  id        Int      @id @default(autoincrement())
-  claimant  String
-  village   String
-  type      String   // IFR, CR, CFR
-  area      Float
-  status    String   // Pending, Granted, Rejected
-  coords    Json     // GeoJSON Point
-  nerData   Json?    // NER extracted entities
-  createdAt DateTime @default(now())
-  userId    String
+  id           Int      @id @default(autoincrement())
+  claimant     String
+  claimantName String
+  village      String
+  district     String
+  type         String
+  area         Float
+  status       String
+  coords       Json
+  nerData      Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id])
+  dss          DSSRecommendation[]
 }
 
 model Asset {
   id        Int      @id @default(autoincrement())
   name      String
   owner     String?
-  type      String   // water, forest, agriculture, settlement
-  coords    Json     // GeoJSON Point
-  village   String?
-  source    String?  // Manual, Satellite
+  type      String
+  coords    Json
+  village   String
+  source    String
   createdAt DateTime @default(now())
 }
 
@@ -157,92 +117,56 @@ model DSSRecommendation {
   claimId   Int
   scheme    String
   reason    String
-  priority  Int      // 1=High, 2=Medium, 3=Low
+  priority  Int      @default(1)
   createdAt DateTime @default(now())
 }
-\`\`\`
+```
 
-## 🚀 Deployment
+> _Note_: Field names retain legacy semantics for compatibility; UI and analytics reinterpret them as Adarsh Gram project entities.
 
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
+## 🔐 Security Highlights
 
-### Database Options
-- **Neon** (Recommended): Serverless PostgreSQL
-- **Supabase**: Full-stack platform with PostgreSQL
-- **Railway**: Simple PostgreSQL hosting
-- **Local**: PostgreSQL with Docker
+- Clerk-powered authentication & session management
+- Middleware-protected routes and API endpoints
+- Audit-friendly logs and AI alerting across modules
+- Blockchain ledger view for funding transparency
 
-### Required Environment Variables in Production
-- Set all environment variables in your deployment platform
-- Ensure `DATABASE_URL` points to your production database
-- Configure Clerk keys for your production domain
+## 📦 Deployment
 
-## 🔧 Development Scripts
+1. Deploy via [Vercel](https://vercel.com/) (recommended).
+2. Configure environment variables in Vercel dashboard.
+3. Point `DATABASE_URL` to managed PostgreSQL (Neon/Supabase/Railway).
+4. Add Clerk production keys and allowed URLs.
 
-\`\`\`bash
-# Development
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
+## 🧪 Development Scripts
 
-# Database
-npx prisma studio    # Open database browser
-npx prisma migrate dev # Run migrations
-npx prisma generate  # Generate Prisma client
-
-# Code Quality
-npm run lint         # Run ESLint
-npm run type-check   # TypeScript checking
-\`\`\`
-
-## 🌟 Key Features
-
-### AI-Powered Document Processing
-- Advanced OCR with confidence scoring
-- Named Entity Recognition for automatic field extraction
-- Support for multiple document formats
-- Intelligent data validation and correction
-
-### Geospatial Intelligence
-- Integration with Indian Space Research Organisation (ISRO) Bhuvan services
-- Real-time satellite imagery and topographic data
-- AI-powered asset classification from satellite images
-- Advanced spatial filtering and analysis
-
-### Decision Support System
-- Rule-based recommendation engine
-- Policy simulation and threshold testing
-- Priority-based claim processing
-- Statistical analysis and reporting
-
-### Performance Optimizations
-- Server-side rendering for SEO and performance
-- Client-side caching with SWR
-- Optimized database queries with Prisma
-- Lazy loading for maps and heavy components
+```bash
+npm run dev        # Start dev server
+npm run build      # Production build
+npm run start      # Serve production build
+npm run lint       # ESLint
+npm run type-check # TypeScript checks
+npx prisma studio  # Inspect database
+```
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Commit (`git commit -m "feat: add your feature"`)
+4. Push (`git push origin feature/your-feature`)
 5. Open a Pull Request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License – refer to the `LICENSE` file.
 
-## 🆘 Support
+## 💬 Support
 
-For issues and questions:
-1. Check the GitHub Issues page
-2. Review the documentation
-3. Contact the development team
+- Check open issues
+- Raise a new ticket with clear reproduction steps
+- Share feedback via the Community Pulse module
 
 ---
 
-**Built with ❤️ for Forest Rights Act digitization and governance**
+Built with ❤️ for inclusive, accountable village development.

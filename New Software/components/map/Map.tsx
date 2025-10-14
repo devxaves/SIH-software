@@ -10,7 +10,7 @@ import useSWR from "swr"
 import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder'
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css'
 
-type Claim = {
+type ProjectSite = {
   id: number
   claimant: string
   village: string
@@ -102,7 +102,7 @@ export default function Map() {
   const mapRef = useRef<MaplibreMap | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
   const hoverPopupRef = useRef<Popup | null>(null)
-  const { data: claims } = useSWR<Claim[]>("/api/claims", fetcher)
+  const { data: projects } = useSWR<ProjectSite[]>("/api/claims", fetcher)
   const { data: assets } = useSWR<Asset[]>("/api/assets", fetcher)
 
   // Simple filters
@@ -112,7 +112,7 @@ export default function Map() {
   const [villageFilter, setVillageFilter] = useState<string>("all")
   
   const [activeLayer, setActiveLayer] = useState<string>("osm-standard")
-  const [showClaims, setShowClaims] = useState(true)
+  const [showProjects, setShowProjects] = useState(true)
   const [showAssets, setShowAssets] = useState(true)
 
   useEffect(() => {
@@ -217,7 +217,7 @@ export default function Map() {
   // Handle markers with hover functionality
   useEffect(() => {
     const map = mapRef.current
-    if (!map || !claims || !assets) return
+    if (!map || !projects || !assets) return
 
     // Remove existing markers
     ;(map as any).__markers?.forEach((m: any) => m.remove())
@@ -225,9 +225,9 @@ export default function Map() {
 
     const markers: maplibregl.Marker[] = []
 
-    // Add claim markers with hover
-    if (showClaims) {
-      claims
+    // Add village project markers with hover
+    if (showProjects) {
+      projects
         .filter((c) => typeFilter === "all" || c.type === typeFilter)
         .filter((c) => statusFilter === "all" || c.status === statusFilter)
         .filter((c) => villageFilter === "all" || c.village === villageFilter)
@@ -253,11 +253,11 @@ export default function Map() {
           }).setHTML(`
             <div class="p-3 min-w-48">
               <div class="font-bold text-lg text-gray-800 mb-2 border-b pb-2">
-                <span class="text-blue-600">🏛️ Forest Rights Claim #${c.id}</span>
+                <span class="text-blue-600">�️ Village Project #${c.id}</span>
               </div>
               <div class="space-y-2 text-sm">
                 <div class="flex justify-between">
-                  <span class="font-semibold text-gray-600">Claimant:</span> 
+                  <span class="font-semibold text-gray-600">Initiative lead:</span> 
                   <span class="text-gray-800">${c.claimant}</span>
                 </div>
                 <div class="flex justify-between">
@@ -358,7 +358,7 @@ export default function Map() {
           }).setHTML(`
             <div class="p-3 min-w-44">
               <div class="font-bold text-lg text-gray-800 mb-2 border-b pb-2">
-                <span class="text-green-600">🌲 Forest Asset #${a.id}</span>
+                <span class="text-green-600">�️ Community Asset #${a.id}</span>
               </div>
               <div class="space-y-2 text-sm">
                 <div class="flex justify-between">
@@ -416,14 +416,14 @@ export default function Map() {
     }
 
     ;(map as any).__markers = markers
-  }, [claims, assets, typeFilter, assetFilter, statusFilter, villageFilter, showClaims, showAssets])
+  }, [projects, assets, typeFilter, assetFilter, statusFilter, villageFilter, showProjects, showAssets])
 
   // Get unique filter values
   const villages = [
     ...new Set([
-      ...(claims?.map((c) => c.village) || []), 
-      ...(assets?.map((a) => a.village).filter(Boolean) || [])
-    ])
+      ...(projects?.map((c) => c.village) || []),
+      ...(assets?.map((a) => a.village).filter(Boolean) || []),
+    ]),
   ]
 
   return (
@@ -452,11 +452,11 @@ export default function Map() {
             <label className="flex items-center gap-2 text-sm font-medium">
               <input
                 type="checkbox"
-                checked={showClaims}
-                onChange={(e) => setShowClaims(e.target.checked)}
+                checked={showProjects}
+                onChange={(e) => setShowProjects(e.target.checked)}
                 className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
-              <span>Show Claims</span>
+              <span>Show Projects</span>
             </label>
             <label className="flex items-center gap-2 text-sm font-medium">
               <input
@@ -489,7 +489,7 @@ export default function Map() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-700">Claim Type:</span>
+            <span className="text-sm font-medium text-gray-700">Project Type:</span>
             <select
               className="px-3 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={typeFilter}
@@ -540,20 +540,20 @@ export default function Map() {
               <span>Granted Claims</span>
             </div>
             <div className="flex items-center gap-1">
+              <div className="w-3 h-3 rounded-full bg-green-500 border border-white shadow-sm"></div>
+              <span>Completed projects</span>
+            </div>
+            <div className="flex items-center gap-1">
               <div className="w-3 h-3 rounded-full bg-blue-500 border border-white shadow-sm"></div>
-              <span>Pending Claims</span>
+              <span>Pipeline projects</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 rounded-full bg-red-500 border border-white shadow-sm"></div>
-              <span>Rejected Claims</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-cyan-500 border border-white shadow-sm"></div>
-              <span>Water Assets</span>
+              <span>Projects needing review</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-2 h-2 rounded-full bg-emerald-600 border border-white shadow-sm"></div>
-              <span>Forest Assets</span>
+                <span>Projects needing review</span>
             </div>
             <div className="text-gray-600">
               <strong>💡 Tip:</strong> Hover over markers for quick info, click for details

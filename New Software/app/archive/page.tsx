@@ -107,7 +107,7 @@ export default function ArchivePage() {
 
     const header = [
       "ID",
-      "Claimant",
+  "Lead",
       "Village",
       "Type",
       "Area",
@@ -133,7 +133,7 @@ export default function ArchivePage() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `fra_archive_${new Date().toISOString().split("T")[0]}.csv`
+  a.download = `community_pulse_${new Date().toISOString().split("T")[0]}.csv`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -142,8 +142,8 @@ export default function ArchivePage() {
     <section className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">FRA Digital Archive</h1>
-          <p className="text-sm text-muted-foreground">Search and browse digitized FRA claims</p>
+          <h1 className="text-2xl font-semibold">Community Pulse Archive</h1>
+          <p className="text-sm text-muted-foreground">Trace participatory updates, feedback, and intervention status across Smart Adarsh Gram villages.</p>
         </div>
         <button
           onClick={exportResults}
@@ -156,12 +156,12 @@ export default function ArchivePage() {
 
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          <StatCard label="Total Claims" value={stats.overview.totalClaims} />
-          <StatCard label="Granted" value={stats.overview.grantedClaims} color="text-green-600" />
-          <StatCard label="Pending" value={stats.overview.pendingClaims} color="text-yellow-600" />
-          <StatCard label="Rejected" value={stats.overview.rejectedClaims} color="text-red-600" />
-          <StatCard label="Recent (30d)" value={stats.overview.recentClaims} />
-          <StatCard label="OCR Processed" value={stats.overview.ocrProcessedClaims} />
+          <StatCard label="Profiles logged" value={stats.overview.totalClaims} />
+          <StatCard label="Completed" value={stats.overview.grantedClaims} color="text-green-600" />
+          <StatCard label="In pipeline" value={stats.overview.pendingClaims} color="text-yellow-600" />
+          <StatCard label="Needs support" value={stats.overview.rejectedClaims} color="text-red-600" />
+          <StatCard label="New in 30d" value={stats.overview.recentClaims} />
+          <StatCard label="AI processed" value={stats.overview.ocrProcessedClaims} />
         </div>
       )}
 
@@ -169,7 +169,7 @@ export default function ArchivePage() {
         <div className="flex gap-3">
           <input
             type="text"
-            placeholder="Search claimant, village, type, or status..."
+            placeholder="Search village stories, project types, or status..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="flex-1 rounded border px-3 py-2 text-sm"
@@ -197,7 +197,7 @@ export default function ArchivePage() {
               onChange={(e) => setFilters((prev) => ({ ...prev, type: e.target.value }))}
               className="rounded border px-3 py-2 text-sm"
             >
-              <option value="">All Types</option>
+              <option value="">All project types</option>
               <option value="IFR">IFR</option>
               <option value="CR">CR</option>
               <option value="CFR">CFR</option>
@@ -207,10 +207,10 @@ export default function ArchivePage() {
               onChange={(e) => setFilters((prev) => ({ ...prev, status: e.target.value }))}
               className="rounded border px-3 py-2 text-sm"
             >
-              <option value="">All Status</option>
-              <option value="Granted">Granted</option>
-              <option value="Pending">Pending</option>
-              <option value="Rejected">Rejected</option>
+              <option value="">All statuses</option>
+              <option value="Granted">Completed</option>
+              <option value="Pending">In pipeline</option>
+              <option value="Rejected">Needs support</option>
             </select>
             <input
               type="date"
@@ -250,7 +250,7 @@ export default function ArchivePage() {
       <div className="rounded-lg border">
         <div className="p-3 flex items-center justify-between border-b">
           <span className="text-sm font-medium">
-            {searchResult ? `${searchResult.pagination.totalCount} claims found` : "Loading..."}
+            {searchResult ? `${searchResult.pagination.totalCount} records found` : "Loading..."}
           </span>
           {searchResult?.pagination && (
             <div className="flex items-center gap-2 text-sm">
@@ -280,10 +280,10 @@ export default function ArchivePage() {
             <thead className="bg-muted/30">
               <tr>
                 <th className="p-3 text-left font-medium">ID</th>
-                <th className="p-3 text-left font-medium">Claimant</th>
+                <th className="p-3 text-left font-medium">Lead</th>
                 <th className="p-3 text-left font-medium">Village</th>
-                <th className="p-3 text-left font-medium">Type</th>
-                <th className="p-3 text-left font-medium">Area</th>
+                <th className="p-3 text-left font-medium">Project type</th>
+                <th className="p-3 text-left font-medium">Coverage</th>
                 <th className="p-3 text-left font-medium">Status</th>
                 <th className="p-3 text-left font-medium">Created</th>
                 <th className="p-3 text-left font-medium">Features</th>
@@ -293,7 +293,7 @@ export default function ArchivePage() {
               {isLoading && (
                 <tr>
                   <td colSpan={8} className="p-6 text-center text-muted-foreground">
-                    Loading claims...
+                    Loading records...
                   </td>
                 </tr>
               )}
@@ -316,7 +316,7 @@ export default function ArchivePage() {
                             : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
-                      {claim.status}
+                      {claim.status === "Granted" ? "Completed" : claim.status === "Pending" ? "In pipeline" : claim.status === "Rejected" ? "Needs support" : claim.status}
                     </span>
                   </td>
                   <td className="p-3">{new Date(claim.createdAt).toLocaleDateString()}</td>
@@ -337,7 +337,7 @@ export default function ArchivePage() {
               {searchResult?.claims?.length === 0 && (
                 <tr>
                   <td colSpan={8} className="p-6 text-center text-muted-foreground">
-                    No claims found matching your search criteria.
+                    No records found matching your search criteria.
                   </td>
                 </tr>
               )}
@@ -349,7 +349,7 @@ export default function ArchivePage() {
       {stats && (
         <div className="grid gap-6 md:grid-cols-2">
           <div className="rounded-lg border p-4">
-            <h3 className="font-medium mb-3">Claims by Type</h3>
+            <h3 className="font-medium mb-3">Projects by type</h3>
             <div className="space-y-2">
               {stats.distribution.byType.map((item) => (
                 <div key={item.type} className="flex justify-between text-sm">

@@ -21,7 +21,7 @@ type Threshold = {
   description?: string
 }
 
-type Claim = {
+type Project = {
   id: number
   claimant: string
   claimantName: string
@@ -37,9 +37,9 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 export default function DSSPage() {
   const { data: recommendations, mutate, isLoading: loadingRecs } = useSWR<Recommendation[]>("/api/dss", fetcher)
   const { data: thresholds, mutate: mutateThresholds, isLoading: loadingThresholds } = useSWR<Threshold[]>("/api/dss/thresholds", fetcher)
-  const { data: claims, isLoading: loadingClaims } = useSWR<Claim[]>("/api/claims", fetcher)
+  const { data: projects, isLoading: loadingProjects } = useSWR<Project[]>("/api/claims", fetcher)
   
-  const [selectedClaimId, setSelectedClaimId] = useState("")
+  const [selectedProjectId, setSelectedProjectId] = useState("")
   const [evaluating, setEvaluating] = useState(false)
   const [simulationMode, setSimulationMode] = useState(false)
   const [tempThresholds, setTempThresholds] = useState<Record<string, number>>({})
@@ -82,7 +82,7 @@ export default function DSSPage() {
       return
     }
 
-    const header = ["ID", "Claim ID", "Scheme", "Reason", "Priority", "Created At"]
+  const header = ["ID", "Project ID", "Scheme", "Reason", "Priority", "Created At"]
     const rows = recommendations.map((r) => [
       r.id,
       r.claimId,
@@ -104,8 +104,8 @@ export default function DSSPage() {
   }
 
   const evaluateRules = async () => {
-    if (!selectedClaimId) {
-      setError("Please select a claim to evaluate")
+    if (!selectedProjectId) {
+      setError("Please select a project to evaluate")
       return
     }
 
@@ -114,7 +114,7 @@ export default function DSSPage() {
 
     try {
       const requestBody: any = {
-        claimId: Number(selectedClaimId),
+        claimId: Number(selectedProjectId),
       }
 
       if (simulationMode) {
@@ -188,9 +188,9 @@ export default function DSSPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">DSS Rule Engine</h1>
+          <h1 className="text-2xl font-semibold">Prioritization Lab</h1>
           <p className="text-sm text-muted-foreground">
-            Decision Support System for Forest Rights Act Implementation
+            AI-assisted intervention ranking across infrastructure, inclusion, and governance levers.
           </p>
         </div>
         <button 
@@ -224,25 +224,35 @@ export default function DSSPage() {
         <div className="space-y-4">
           {/* Rule Evaluation */}
           <div className="rounded-lg border p-4">
-            <h3 className="font-medium mb-3">Rule Evaluation</h3>
+            <h3 className="font-medium mb-3">Recommendation engine</h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium mb-1">Select Claim to Evaluate</label>
-                {loadingClaims ? (
-                  <div className="w-full rounded border px-3 py-2 text-sm bg-gray-50">Loading claims...</div>
+                <label className="block text-sm font-medium mb-1">Select project to evaluate</label>
+                {loadingProjects ? (
+                  <div className="w-full rounded border px-3 py-2 text-sm bg-gray-50">Loading projects...</div>
                 ) : (
                   <select
-                    value={selectedClaimId}
-                    onChange={(e) => setSelectedClaimId(e.target.value)}
+                    value={selectedProjectId}
+                    onChange={(e) => setSelectedProjectId(e.target.value)}
                     className="w-full rounded border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   >
-                    <option value="">Select a claim...</option>
-                    {claims?.map((claim) => (
-                      <option key={claim.id} value={claim.id}>
-                        #{claim.id} - {claim.claimantName} ({claim.claimant}) - {claim.village}, {claim.district} 
-                        [{claim.type}, {claim.area}ha, {claim.status}]
-                      </option>
-                    ))}
+                    <option value="">Select a project...</option>
+                    {projects?.map((project) => {
+                      const statusLabel =
+                        project.status === "Granted"
+                          ? "Completed"
+                          : project.status === "Pending"
+                            ? "In pipeline"
+                            : project.status === "Rejected"
+                              ? "Needs review"
+                              : project.status
+
+                      return (
+                        <option key={project.id} value={project.id}>
+                          #{project.id} · {project.village}, {project.district} · {project.type} · {project.area}ha · {statusLabel}
+                        </option>
+                      )
+                    })}
                   </select>
                 )}
               </div>
@@ -261,7 +271,7 @@ export default function DSSPage() {
 
               <button
                 onClick={evaluateRules}
-                disabled={!selectedClaimId || evaluating || loadingClaims}
+                disabled={!selectedProjectId || evaluating || loadingProjects}
                 className="w-full rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {evaluating ? "Evaluating Rules..." : "Evaluate DSS Rules"}
@@ -280,11 +290,11 @@ export default function DSSPage() {
             ) : (
               <div className="space-y-3">
                 {[
-                  { param: "water_index", label: "Water Index Threshold", min: 0, max: 1, step: 0.1 },
-                  { param: "forest_cover", label: "Forest Cover Threshold", min: 0, max: 1, step: 0.1 },
-                  { param: "max_area_ha", label: "Max Area (Ha)", min: 1, max: 10, step: 0.5 },
-                  { param: "min_area_ha", label: "Min Area (Ha)", min: 0.1, max: 2, step: 0.1 },
-                  { param: "population_density", label: "Population Density (/km²)", min: 50, max: 500, step: 10 },
+                  { param: "water_index", label: "Water security index", min: 0, max: 1, step: 0.1 },
+                  { param: "forest_cover", label: "Green cover ratio", min: 0, max: 1, step: 0.1 },
+                  { param: "max_area_ha", label: "Max service footprint (ha)", min: 1, max: 10, step: 0.5 },
+                  { param: "min_area_ha", label: "Min service footprint (ha)", min: 0.1, max: 2, step: 0.1 },
+                  { param: "population_density", label: "Population density (/km²)", min: 50, max: 500, step: 10 },
                 ].map(({ param, label, min, max, step }) => (
                   <div key={param}>
                     <label className="block text-sm font-medium mb-1">{label}</label>
@@ -325,7 +335,7 @@ export default function DSSPage() {
                   <div className="text-2xl font-bold text-green-600">
                     {new Set(recommendations.map((r) => r.claimId)).size}
                   </div>
-                  <div className="text-muted-foreground">Claims Covered</div>
+                  <div className="text-muted-foreground">Projects covered</div>
                 </div>
               </div>
 
@@ -368,7 +378,7 @@ export default function DSSPage() {
             </div>
           ) : (
             <div className="text-sm text-gray-500 text-center py-8">
-              No recommendations yet. Select a claim and evaluate rules to see statistics.
+              No recommendations yet. Select a project and evaluate rules to see statistics.
             </div>
           )}
         </div>
@@ -386,7 +396,7 @@ export default function DSSPage() {
           <thead className="bg-muted/30">
             <tr>
               <Th>ID</Th>
-              <Th>Claim ID</Th>
+              <Th>Project ID</Th>
               <Th>Priority</Th>
               <Th>Scheme</Th>
               <Th>Reason</Th>
@@ -404,7 +414,7 @@ export default function DSSPage() {
             {!loadingRecs && (!recommendations || recommendations.length === 0) && (
               <tr>
                 <td colSpan={6} className="p-8 text-center text-gray-500">
-                  No recommendations found. Evaluate claims to generate recommendations.
+                  No recommendations found. Evaluate projects to generate recommendations.
                 </td>
               </tr>
             )}

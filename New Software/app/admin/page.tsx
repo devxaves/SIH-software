@@ -90,33 +90,38 @@ export default function AdminPage() {
 
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-semibold">Admin Tools</h1>
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-900">Operations Desk</h1>
+        <p className="text-sm text-muted-foreground">
+          Manage village project records, sync community assets, and orchestrate Smart Adarsh Gram field operations.
+        </p>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <FormCard title="Add Claim" onSubmit={addClaim}>
-          <Field name="claimant" label="Claimant ID" required />
-          <Field name="claimantName" label="Claimant Name" required />
+        <FormCard title="Register project" onSubmit={addClaim}>
+          <Field name="claimant" label="Lead household / institution" required />
+          <Field name="claimantName" label="Project title" required />
           <Field name="village" label="Village" required />
           <Field name="district" label="District" required />
-          <Select name="type" label="Type" options={["IFR", "CR", "CFR"]} />
-          <Field name="area" label="Area (ha)" type="number" step="0.01" />
+          <Select name="type" label="Project type" options={["IFR", "CR", "CFR"]} />
+          <Field name="area" label="Coverage area (ha)" type="number" step="0.01" />
           <Select name="status" label="Status" options={["PENDING", "APPROVED", "REJECTED"]} />
-          <Textarea name="coords" label="Coords (GeoJSON)" placeholder='{"type":"Point","coordinates":[77,20]}' />
+          <Textarea name="coords" label="Location coords (GeoJSON)" placeholder='{"type":"Point","coordinates":[77,20]}' />
         </FormCard>
 
-        <FormCard title="Add Asset (Manual)" onSubmit={addAsset}>
-          <Field name="name" label="Name" required />
-          <Field name="owner" label="Owner" />
+        <FormCard title="Log community asset" onSubmit={addAsset}>
+          <Field name="name" label="Asset name" required />
+          <Field name="owner" label="Custodian" />
           <Field name="village" label="Village" />
-          <Select name="type" label="Type" options={["water", "forest", "agriculture", "settlement"]} />
+          <Select name="type" label="Asset type" options={["water", "forest", "agriculture", "settlement"]} />
           <Select name="source" label="Source" options={["Manual", "Satellite"]} />
-          <Textarea name="coords" label="Coords (GeoJSON)" placeholder='{"type":"Point","coordinates":[77,20]}' />
+          <Textarea name="coords" label="Location coords (GeoJSON)" placeholder='{"type":"Point","coordinates":[77,20]}' />
         </FormCard>
       </div>
 
       {aiAssets.length > 0 && (
         <div className="rounded-lg border p-4">
-          <h3 className="font-medium mb-3">AI-Detected Assets Summary</h3>
+          <h3 className="font-medium mb-3">AI-detected asset summary</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             {["agriculture", "forest", "water", "settlement"].map((type) => {
               const count = aiAssets.filter((a) => a.type === type).length
@@ -132,15 +137,15 @@ export default function AdminPage() {
       )}
 
       <DataList
-        title="Claims"
+        title="Project registry"
         rows={claims.map((c) => [c.id, c.claimant, c.claimantName, c.village, c.district, c.type, c.status, c.area])}
-        headers={["ID", "Claimant ID", "Claimant Name", "Village", "District", "Type", "Status", "Area"]}
+        headers={["ID", "Lead", "Project title", "Village", "District", "Type", "Status", "Coverage (ha)"]}
       />
 
       <DataList
-        title={`Assets (${assets.length} total: ${manualAssets.length} manual, ${aiAssets.length} AI-detected)`}
+        title={`Community assets (${assets.length} total: ${manualAssets.length} field-logged, ${aiAssets.length} AI-detected)`}
         rows={assets.map((a) => [a.id, a.name, a.owner ?? "-", a.type, a.village ?? "-", a.source ?? "Manual"])}
-        headers={["ID", "Name", "Owner", "Type", "Village", "Source"]}
+        headers={["ID", "Asset", "Custodian", "Type", "Village", "Source"]}
       />
     </section>
   )

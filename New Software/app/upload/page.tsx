@@ -26,7 +26,7 @@ export default function UploadPage() {
   const onUpload = async () => {
     if (!file) return
     setLoading(true)
-    setStatus("Processing document with OCR + NER...")
+  setStatus("Processing document through AI ingestion pipeline...")
     try {
       const fd = new FormData()
       fd.append("file", file)
@@ -41,9 +41,9 @@ export default function UploadPage() {
     }
   }
 
-  const saveClaim = async () => {
+  const saveProject = async () => {
     if (!result) return
-    setStatus("Saving claim...")
+  setStatus("Committing project profile...")
     const res = await fetch("/api/claims", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -58,16 +58,20 @@ export default function UploadPage() {
       }),
     })
     if (!res.ok) {
-      setStatus("Failed to save claim")
+      setStatus("Failed to save project profile")
       return
     }
-    setStatus("Saved claim successfully")
+    setStatus("Project profile created successfully")
   }
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-semibold">Upload Documents</h1>
-      <p className="text-sm text-muted-foreground">Upload FRA documents for AI-powered OCR + NER entity extraction</p>
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-900">Data Ops Workbench</h1>
+        <p className="text-sm text-muted-foreground">
+          Onboard village dossiers, survey scans, or sanction orders to auto-extract project metadata for Smart Adarsh Gram workflows.
+        </p>
+      </div>
 
       <div className="rounded-lg border p-4">
         <div className="flex items-center gap-3">
@@ -82,7 +86,7 @@ export default function UploadPage() {
             disabled={!file || loading}
             className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
           >
-            {loading ? "Processing..." : "OCR + NER"}
+            {loading ? "Processing..." : "Ingest"}
           </button>
         </div>
         {status && <p className="mt-2 text-sm text-muted-foreground">{status}</p>}
@@ -92,7 +96,7 @@ export default function UploadPage() {
         <div className="grid gap-4 lg:grid-cols-3">
           <div className="rounded-lg border p-4">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm font-medium">Extracted Fields</span>
+              <span className="text-sm font-medium">Extracted fields</span>
               {result.fields.confidence && (
                 <span className="text-xs text-muted-foreground">
                   {Math.round(result.fields.confidence * 100)}% confidence
@@ -100,21 +104,21 @@ export default function UploadPage() {
               )}
             </div>
             <div className="grid gap-2 text-sm">
-              <div>Claimant: {result.fields.claimant || "-"}</div>
+              <div>Lead household / institution: {result.fields.claimant || "-"}</div>
               <div>Village: {result.fields.village || "-"}</div>
-              <div>Type: {result.fields.type || "-"}</div>
-              <div>Area: {result.fields.area ?? "-"}</div>
+              <div>Project type: {result.fields.type || "-"}</div>
+              <div>Coverage area (ha): {result.fields.area ?? "-"}</div>
               <div>Status: {result.fields.status || "-"}</div>
-              {result.fields.coordinates && <div>Coordinates: {result.fields.coordinates}</div>}
+              {result.fields.coordinates && <div>Geo-coordinates: {result.fields.coordinates}</div>}
             </div>
-            <button onClick={saveClaim} className="mt-3 rounded border px-3 py-2 text-sm">
-              Save as Claim
+            <button onClick={saveProject} className="mt-3 rounded border px-3 py-2 text-sm">
+              Add to project registry
             </button>
           </div>
 
           {result.nerEntities && (
             <div className="rounded-lg border p-4">
-              <div className="mb-2 text-sm font-medium">NER Entities</div>
+              <div className="mb-2 text-sm font-medium">Entity spotlight</div>
               <div className="space-y-2 text-xs">
                 {result.nerEntities.persons?.length > 0 && (
                   <div>
@@ -141,7 +145,7 @@ export default function UploadPage() {
           )}
 
           <div className="rounded-lg border p-4">
-            <div className="mb-2 text-sm font-medium">Raw Text</div>
+            <div className="mb-2 text-sm font-medium">Raw transcript</div>
             <pre className="max-h-72 overflow-auto whitespace-pre-wrap text-xs">{result.text}</pre>
           </div>
         </div>

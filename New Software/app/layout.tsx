@@ -11,8 +11,9 @@ import Forestbg from "./forestbg.png"
 import Image from "next/image"
 
 export const metadata: Metadata = {
-  title: "FRA Atlas & DSS v2.0",
-  description: "Forest Rights Act Atlas & Decision Support System with AI-powered digitization",
+  title: "Smart Adarsh Gram Platform",
+  description:
+    "AI-driven infrastructure planning, inclusion analytics, and participatory governance toolkit for SC-majority villages.",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           className={`font-sans ${GeistSans.variable} ${GeistMono.variable} min-h-dvh bg-background text-foreground antialiased`}
         >
           {/* Background image */}
-      <div className="absolute inset-0 fixed -z-10">
+  <div className="fixed inset-0 -z-10">
   <Image
     src={Forestbg}
     alt="Forest background"
@@ -33,50 +34,50 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   />
 </div>
           <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
-            <header className="border-b bg-gradient-to-r from-green-50 to-blue-50 shadow-sm">
+            <header className="border-b bg-gradient-to-r from-slate-50 via-emerald-50 to-sky-50 shadow-sm">
               <nav className="mx-auto flex max-w-7xl items-center justify-between p-4">
                 <Link
                   href="/landing"
-                  className="font-bold text-xl text-green-700 hover:text-green-800 transition-colors"
+                  className="font-bold text-xl text-emerald-700 hover:text-emerald-800 transition-colors"
                 >
-                  🌲 FRA Atlas & DSS v2.0
+                  � Smart Adarsh Gram Platform
                 </Link>
                 <div className="flex items-center gap-4">
                   <Link
-                    className="text-sm font-medium hover:text-green-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium hover:text-emerald-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/dashboard"
                   >
-                     Dashboard
+                    Intelligence Hub
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
-                    href="/upload"
-                  >
-                     Upload
-                  </Link>
-                  <Link
-                    className="text-sm font-medium hover:text-emerald-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium hover:text-sky-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/atlas"
                   >
-                     Atlas
+                    Geo Atlas
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-purple-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium hover:text-lime-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/dss"
                   >
-                     DSS
+                    Prioritization Lab
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-orange-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium hover:text-cyan-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
+                    href="/upload"
+                  >
+                    Data Ops
+                  </Link>
+                  <Link
+                    className="text-sm font-medium hover:text-amber-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/archive"
                   >
-                     Archive
+                    Community Pulse
                   </Link>
                   <Link
-                    className="text-sm font-medium hover:text-red-600 transition-colors px-3 py-2 rounded-md hover:bg-white/50"
+                    className="text-sm font-medium hover:text-rose-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/admin"
                   >
-                     Admin
+                    Operations Desk
                   </Link>
                 </div>
               </nav>
