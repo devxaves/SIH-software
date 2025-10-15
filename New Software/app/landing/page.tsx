@@ -119,7 +119,7 @@ export default async function LandingPage() {
         </div>
 
         <h1 className="mt-6 text-balance text-5xl font-bold bg-gradient-to-r from-emerald-600 via-sky-600 to-indigo-600 bg-clip-text text-transparent">
-          Smart Adarsh Gram Platform
+          BharatGram
         </h1>
         <p className="mt-4 mx-auto max-w-3xl text-balance text-lg text-muted-foreground">
           Deliver evidence-driven transformation for SC-majority villages with end-to-end gap analysis, smart

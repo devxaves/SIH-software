@@ -54,7 +54,7 @@ export default function DashboardPage() {
     isLoading,
   } = useSWR<DashboardAnalytics>(isSignedIn ? "/api/dashboard/analytics" : null, fetcher, { refreshInterval: 45000 })
 
-  if (!isSignedIn) return <div className="p-6 text-sm text-muted-foreground">Sign in to access the Smart Adarsh Gram Intelligence Hub.</div>
+  if (!isSignedIn) return <div className="p-6 text-sm text-muted-foreground">Sign in to access the BharatGram Intelligence Hub.</div>
   if (isLoading) return <div className="p-6">Loading intelligence feeds...</div>
   if (error) return <div className="p-6 text-red-600">Unable to load analytics. Please retry in a moment.</div>
   if (!analytics) return <div className="p-6">No intelligence data available yet.</div>

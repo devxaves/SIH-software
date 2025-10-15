@@ -143,7 +143,7 @@ export default function ArchivePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Community Pulse Archive</h1>
-          <p className="text-sm text-muted-foreground">Trace participatory updates, feedback, and intervention status across Smart Adarsh Gram villages.</p>
+          <p className="text-sm text-muted-foreground">Trace participatory updates, feedback, and intervention status across BharatGram villages.</p>
         </div>
         <button
           onClick={exportResults}

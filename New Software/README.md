@@ -1,4 +1,4 @@
-# Smart Adarsh Gram Platform 🏡
+# BharatGram 🏡
 
 AI-driven infrastructure planning, inclusion analytics, and participatory governance toolkit for SC-majority villages pursuing the Adarsh Gram declaration.
 

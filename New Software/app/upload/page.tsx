@@ -69,7 +69,7 @@ export default function UploadPage() {
       <div>
         <h1 className="text-2xl font-semibold text-slate-900">Data Ops Workbench</h1>
         <p className="text-sm text-muted-foreground">
-          Onboard village dossiers, survey scans, or sanction orders to auto-extract project metadata for Smart Adarsh Gram workflows.
+          Onboard village dossiers, survey scans, or sanction orders to auto-extract project metadata for BharatGram workflows.
         </p>
       </div>
 

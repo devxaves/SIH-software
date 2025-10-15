@@ -11,7 +11,7 @@ import Forestbg from "./forestbg.png"
 import Image from "next/image"
 
 export const metadata: Metadata = {
-  title: "Smart Adarsh Gram Platform",
+  title: "BharatGram",
   description:
     "AI-driven infrastructure planning, inclusion analytics, and participatory governance toolkit for SC-majority villages.",
 }
@@ -38,16 +38,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <nav className="mx-auto flex max-w-7xl items-center justify-between p-4">
                 <Link
                   href="/landing"
-                  className="font-bold text-xl text-emerald-700 hover:text-emerald-800 transition-colors"
+                  className="font-bold flex flex-row items-center gap-2 text-xl text-emerald-700 hover:text-emerald-800 transition-colors"
                 >
-                  � Smart Adarsh Gram Platform
+                  <img src="/bharatgramlogo.png" alt="BharatGram" className="w-10 h-10" />
+                   BharatGram
                 </Link>
                 <div className="flex items-center gap-4">
                   <Link
                     className="text-sm font-medium hover:text-emerald-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/dashboard"
                   >
-                    Intelligence Hub
+                    Dashboard
                   </Link>
                   <Link
                     className="text-sm font-medium hover:text-sky-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
@@ -55,12 +56,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   >
                     Geo Atlas
                   </Link>
-                  <Link
+                  {/* <Link
                     className="text-sm font-medium hover:text-lime-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/dss"
                   >
                     Prioritization Lab
-                  </Link>
+                  </Link> */}
                   <Link
                     className="text-sm font-medium hover:text-cyan-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/upload"
@@ -71,13 +72,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     className="text-sm font-medium hover:text-amber-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/archive"
                   >
-                    Community Pulse
+                    Projects Archive
                   </Link>
                   <Link
                     className="text-sm font-medium hover:text-rose-600 transition-colors px-3 py-2 rounded-md hover:bg-white/60"
                     href="/admin"
                   >
-                    Operations Desk
+                    Admin Panel
                   </Link>
                 </div>
               </nav>
